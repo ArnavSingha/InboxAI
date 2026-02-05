@@ -186,7 +186,7 @@ class ChatService:
                 reply_content = await generate_reply(email)
             except AIError as e:
                 return ChatResponse(
-                    message=f"Couldn't generate a reply. Please provide what you'd like to say, e.g., 'reply to #{email['index']}: Thanks for the update!'",
+                    message=f"Couldn't generate a reply: {str(e)}\n\nYou can draft it manually, e.g., 'reply to #{email['index']}: Thanks for the update!'",
                     type="error",
                 )
         

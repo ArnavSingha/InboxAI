@@ -20,10 +20,6 @@ if settings.gemini_api_key:
     genai.configure(api_key=settings.gemini_api_key)
 
 
-def get_model(model_name: str = "gemini-1.5-flash"):
-    """Get a Gemini model instance."""
-    return genai.GenerativeModel(model_name)
-
 
 async def complete(
     prompt: str,
@@ -49,30 +45,88 @@ async def complete(
         AIError: If Gemini API fails
     """
     try:
-        # Create model with system instruction
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            system_instruction=system_instruction,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=max_tokens,
-                temperature=temperature,
-            ),
-        )
+        if not settings.gemini_api_key:
+            raise AIError("Gemini API key not configured in .env")
 
-        # Generate response
-        response = model.generate_content(prompt)
+        # List of models to try in order of preference
+        candidates = [
+            "gemini-flash-latest",     # Alias for latest Flash model
+            "gemini-2.0-flash",        # Confirmed available for user
+            "gemini-1.5-flash",
+            "gemini-1.5-pro",
+            "gemini-pro",
+        ]
 
-        if not response.text:
-            raise AIError("Empty response from Gemini")
+        last_error = None
+        
+        for model_name in candidates:
+            try:
+                model = genai.GenerativeModel(
+                    model_name=model_name,
+                    system_instruction=system_instruction,
+                    generation_config=genai.types.GenerationConfig(
+                        max_output_tokens=max_tokens,
+                        temperature=temperature,
+                    ),
+                )
 
-        content = response.text.strip()
+                # Generate response asynchronously
+                logger.info(f"Attempting generation with model: {model_name}")
+                response = await model.generate_content_async(prompt)
+                
+                # Check for valid candidates and parts
+                if not response.candidates:
+                    raise AIError("No candidates returned from Gemini")
 
-        # If JSON mode, try to extract JSON from response
-        if json_mode:
-            content = extract_json(content)
+                candidate = response.candidates[0]
+                finish_reason = candidate.finish_reason
 
-        logger.debug(f"Gemini response: {content[:100]}...")
-        return content
+                # Handle specific finish reasons if no text
+                if not candidate.content.parts:
+                    if finish_reason == 2: # MAX_TOKENS
+                         raise AIError(f"Response truncated (Max Tokens reached) with no content. Model: {model_name}")
+                    if finish_reason == 3: # SAFETY
+                         raise AIError(f"Content blocked by safety filters ({model_name})")
+                    if finish_reason == 4: # RECITATION
+                         raise AIError(f"Content blocked: Recitation ({model_name})")
+                    
+                    # Fallback for other empty responses
+                    raise AIError(f"Empty response (Finish Reason: {finish_reason}) from {model_name}")
+                
+                # Safe to access text now
+                try:
+                    content = response.text.strip()
+                except ValueError:
+                    # In case .text fails despite checks
+                    content = candidate.content.parts[0].text.strip() if candidate.content.parts else ""
+
+                if not content:
+                     raise AIError("Received empty text content")
+                
+                # If JSON mode, try to extract JSON from response
+                if json_mode:
+                    content = extract_json(content)
+
+                logger.debug(f"Gemini response: {content[:100]}...")
+                return content  # Success!
+                
+            except Exception as e:
+                error_str = str(e)
+                # If 404 (Not Found) or 400 (Not Supported), try next model
+                if "404" in error_str or "not found" in error_str.lower():
+                    logger.warning(f"Model {model_name} failed (Not Found), trying next...")
+                    last_error = e
+                    continue
+                # If safety block, stop trying (content specific)
+                if "blocked" in error_str.lower():
+                    raise AIError(f"Content blocked by safety filters ({model_name})")
+                
+                # Other errors - fatal
+                raise e
+        
+        # If all failed
+        raise last_error or AIError("All AI models failed")
+
 
     except Exception as e:
         logger.error(f"Gemini API error: {e}")

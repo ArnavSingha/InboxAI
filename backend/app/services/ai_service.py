@@ -90,7 +90,7 @@ Summary:"""
         summary = await complete(
             prompt=prompt,
             system_instruction="You are an email summarizer. Be concise.",
-            max_tokens=100,
+            max_tokens=250,
             temperature=0.3,
         )
         return summary.strip()
@@ -142,11 +142,11 @@ Reply (body only, no subject):"""
 - Sign off naturally"""
 
     try:
-        reply = await complete(prompt=prompt, system_instruction=system, max_tokens=300, temperature=0.7)
+        reply = await complete(prompt=prompt, system_instruction=system, max_tokens=1000, temperature=0.7)
         return reply.strip()
-    except AIError:
-        logger.warning("AI reply generation failed")
-        raise AIError("Couldn't generate a reply. Please try again or write your own.")
+    except AIError as e:
+        logger.warning(f"AI reply generation failed: {e}")
+        raise AIError(f"Couldn't generate a reply: {str(e)}")
 
 
 # =============================================================================

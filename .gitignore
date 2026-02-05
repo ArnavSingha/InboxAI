@@ -27,13 +27,14 @@ ENV/
 env/
 .venv/
 
-#credentials
-credentials.json
-
 # Environment files
 .env
 .env.local
 .env.*.local
+credentials.json
+backend/credentials.json
+token.json
+backend/token.json
 
 # IDE
 .idea/

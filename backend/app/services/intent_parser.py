@@ -157,7 +157,8 @@ EMAIL_REF_PATTERNS = {
 
 # Reply content extraction patterns
 REPLY_CONTENT_PATTERNS = [
-    r'reply[:\s]+["\']?(.+?)["\']?$',           # reply: "content" or reply: content
+    r'reply:\s*["\']?(.+?)["\']?$',             # reply: content (explicit colon)
+    r'reply\s+(?!to\b)["\']?(.+?)["\']?$',      # reply content (no colon, avoid "reply to")
     r'respond\s+with[:\s]+["\']?(.+?)["\']?$',  # respond with: content
     r'say[:\s]+["\']?(.+?)["\']?$',             # say: content
     r'tell\s+them[:\s]+["\']?(.+?)["\']?$',     # tell them: content

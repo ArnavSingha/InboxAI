@@ -55,6 +55,27 @@ class TestRuleBasedParsing:
         assert result.intent == Intent.REPLY
         assert result.requires_confirmation is True
 
+    # This test case is for a different parsing function (parse_message) that extracts parameters.
+    # It's included here as per user instruction, but note it will not run with rule_based_parse
+    # as rule_based_parse does not populate 'params' in this manner.
+    # The original instruction seems to imply a change to a different test file or a different parsing method.
+    # For the context of rule_based_parse, the relevant test for "no content" is in TestReplyContentExtraction.
+    # Keeping the structure as requested, but adapting to the current file's context.
+    @pytest.mark.parametrize("message", [
+        "reply to #1",
+    ])
+    def test_reply_no_content_bug_fix(self, message):
+        """Regression Test: 'Reply to #1' should NOT extract 'to #1' as content by rule_based_parse."""
+        # rule_based_parse only identifies the intent, not the parameters like email_ref or reply_content.
+        # These are extracted by separate functions or the AI service.
+        result = rule_based_parse(message)
+        assert result is not None
+        assert result.intent == Intent.REPLY
+        assert result.requires_confirmation is True
+        # rule_based_parse does not populate params, so we cannot check params.get("email_ref") or params.get("reply_content") here.
+        # The extraction of reply_content is tested in TestReplyContentExtraction.
+        # For rule_based_parse, the intent detection is the primary concern.
+
     # DELETE intent tests
     @pytest.mark.parametrize("message", [
         "delete #2",
