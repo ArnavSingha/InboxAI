@@ -2,7 +2,7 @@
 
 > AI-powered email assistant with natural language commands
 
-🔗 **Live Demo**: [https://inboxai.vercel.app](https://inboxai.vercel.app)
+🔗 **Live Demo**: [https://inboxaii.netlify.app](https://inboxaii.netlify.app)
 
 ---
 
