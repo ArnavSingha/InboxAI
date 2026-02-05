@@ -97,8 +97,13 @@ async def oauth_callback(code: str = None, error: str = None):
         )
         
         # Determine secure flag based on environment
+        # Determine secure flag based on environment
         # Localhost over HTTP should NOT use secure=True
         is_secure = "https" in settings.frontend_url and "localhost" not in settings.frontend_url
+        
+        # For cross-domain (Netlify -> Render), we MUST use SameSite=None; Secure=True
+        # For localhost, we use Lax to allow http
+        samesite_mode = "none" if is_secure else "lax"
         
         # Set session cookie
         response.set_cookie(
@@ -106,12 +111,12 @@ async def oauth_callback(code: str = None, error: str = None):
             value=session_token,
             httponly=True,
             secure=is_secure,
-            samesite="lax",  # Safer for localhost
+            samesite=samesite_mode,
             max_age=settings.session_expire_hours * 3600,
             path="/",
         )
         
-        logger.info(f"Setting cookie: secure={is_secure}, samesite=lax")
+        logger.info(f"Setting cookie: secure={is_secure}, samesite={samesite_mode}")
         return response
         
     except Exception as e:

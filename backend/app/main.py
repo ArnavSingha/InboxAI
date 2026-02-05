@@ -22,9 +22,17 @@ app = FastAPI(
 settings = get_settings()
 
 # Configure CORS
+# We handle both slash/no-slash versions of the frontend URL to avoid common config errors
+origins = [
+    settings.frontend_url,
+    settings.frontend_url.rstrip("/"),     # Ensure no trailing slash match
+    f"{settings.frontend_url.rstrip('/')}/", # Ensure trailing slash match
+    "http://localhost:3000",                # Local frontend
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
