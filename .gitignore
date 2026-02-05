@@ -27,8 +27,8 @@ ENV/
 env/
 .venv/
 
-# Credentials
-credentials.json/
+#credentials
+credentials.json
 
 # Environment files
 .env
