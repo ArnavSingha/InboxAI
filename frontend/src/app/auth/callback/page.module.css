@@ -1,0 +1,32 @@
+.main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background);
+}
+
+.container {
+    text-align: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--surface);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto var(--space-lg);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.message {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}

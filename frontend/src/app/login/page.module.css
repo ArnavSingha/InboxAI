@@ -1,0 +1,44 @@
+.main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background);
+}
+
+.container {
+    padding: var(--space-xl);
+}
+
+.card {
+    background: var(--background-light);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--surface);
+    text-align: center;
+    max-width: 400px;
+}
+
+.icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-lg);
+}
+
+.title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+}
+
+.message {
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.error {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+}

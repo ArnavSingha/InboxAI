@@ -1,0 +1,69 @@
+.bubble {
+    max-width: 80%;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    position: relative;
+}
+
+.bubble.user {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: var(--radius-sm);
+}
+
+.bubble.assistant {
+    background: var(--surface);
+    color: var(--text);
+    border-bottom-left-radius: var(--radius-sm);
+}
+
+.bubble.error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--error);
+    color: var(--error);
+}
+
+.content {
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.content strong {
+    font-weight: 600;
+}
+
+.timestamp {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: var(--space-xs);
+    opacity: 0.7;
+}
+
+.bubble.user .timestamp {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Animation for new messages */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bubble {
+    animation: slideIn 0.2s ease-out;
+}
+
+@media (max-width: 600px) {
+    .bubble {
+        max-width: 90%;
+        padding: var(--space-sm) var(--space-md);
+    }
+}

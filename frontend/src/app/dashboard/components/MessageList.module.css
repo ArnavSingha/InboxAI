@@ -1,0 +1,155 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.messageWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageWrapper.user {
+    align-items: flex-end;
+}
+
+.messageWrapper.assistant {
+    align-items: flex-start;
+}
+
+/* Email cards container */
+.emailsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 100%;
+}
+
+.emailCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* Confirmation container */
+.confirmationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 100%;
+}
+
+.quickActions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.actionButton {
+    padding: var(--space-sm) var(--space-lg);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.actionButton.confirm {
+    background: var(--success);
+    color: white;
+}
+
+.actionButton.confirm:hover {
+    background: #0d9b72;
+    transform: translateY(-1px);
+}
+
+.actionButton.cancel {
+    background: var(--surface);
+    color: var(--text);
+}
+
+.actionButton.cancel:hover {
+    background: var(--error);
+    color: white;
+}
+
+/* Categories container */
+.categoriesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 100%;
+}
+
+.categoryGroup {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    border: 1px solid var(--surface-light);
+}
+
+.categoryTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-light);
+    margin-bottom: var(--space-sm);
+}
+
+.categoryEmails {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* Digest container */
+.digestContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 100%;
+}
+
+.digestActions {
+    background: var(--surface);
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--secondary);
+}
+
+.digestActions h5 {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+}
+
+.digestActions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.digestActions li {
+    font-size: 0.9rem;
+    color: var(--text);
+    padding: var(--space-xs) 0;
+}
+
+.digestActions li::before {
+    content: '→ ';
+    color: var(--secondary);
+}
+
+@media (max-width: 600px) {
+    .quickActions {
+        flex-wrap: wrap;
+    }
+
+    .actionButton {
+        flex: 1;
+        justify-content: center;
+    }
+}

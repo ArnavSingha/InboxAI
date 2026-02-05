@@ -1,0 +1,119 @@
+.container {
+    padding: var(--space-md) var(--space-lg);
+    background: var(--surface);
+    border-top: 1px solid var(--surface-light);
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-sm);
+    background: var(--background-light);
+    border: 1px solid var(--surface-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm);
+    transition: border-color var(--transition-fast);
+}
+
+.inputWrapper:focus-within {
+    border-color: var(--primary);
+}
+
+.textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none;
+    min-height: 24px;
+    max-height: 150px;
+    padding: var(--space-xs);
+}
+
+.textarea::placeholder {
+    color: var(--text-dim);
+}
+
+.textarea:focus {
+    outline: none;
+}
+
+.textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sendButton {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.sendButton:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.sendButton:disabled {
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-dim);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: var(--space-sm);
+}
+
+.hint kbd {
+    background: var(--background);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.7rem;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .hint {
+        display: none;
+    }
+
+    .sendButton {
+        width: 40px;
+        height: 40px;
+    }
+}
